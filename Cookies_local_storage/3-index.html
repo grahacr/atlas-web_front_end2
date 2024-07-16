@@ -90,7 +90,7 @@
           const welcomemsg = document.createElement("div");
           welcomemsg.id = 'welcomeMessage';
           welcomemsg.innerHTML = `<h1>Welcome: ${firstname} <a class="logout-link" onclick="deleteCookiesAndShowForm()"> (logout)</a></h1>`;
-          document.body.appendChild(welcomemsg);
+          document.welcomeMessage.appendChild(welcomemsg);
         } else {
           showForm();
         }
