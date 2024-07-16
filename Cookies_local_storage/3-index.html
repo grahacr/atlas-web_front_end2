@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Cookies</title>  
+  <title>Welcome</title>  
   <script src="./src/index.js"></script>
 </head>
 <body>
@@ -18,7 +18,9 @@
     <button onclick="showCookies()">Show the cookies</button>
   </div>
 
-  <div id="welcomeMessage"></div>
+  <div id="welcomeMessage">
+
+  </div>
 
 <!--  <div class="welomeMessage">
     <h2>Welcome:</h2>
@@ -38,6 +40,8 @@
 
       document.cookie = `firstname=${firstname}; expires=${expires}; path=/; `;
       document.cookie = `email=${email}; expires=${expires}; path=/; `;
+
+      showWelcomeMessageOrForm();
     }
     
     function getCookie(name) {
@@ -58,15 +62,15 @@
       const firstname = getCookie('firstname');
       const email = getCookie('email');
 
-      newP.innerHTML = `Email: ${email} - Firstname: ${firstname}`;
+      newP.textContent = `Email: ${email} - Firstname: ${firstname}`;
 
       cookiesSection.appendChild(newP);
     }
 
     function showForm() {
-      let welcomeMessage = document.getElementById("welcomeMessage");
+      const welcomeMessage = document.getElementById("welcomeMessage");
       if (welcomeMessage) {
-        welcomeMessage.remove();
+        welcomeMessage.innerHTML = '';
       }
       const form = document.getElementById('cookies-section');
       form.style.display = 'block';
@@ -86,11 +90,22 @@
     function showWelcomeMessageOrForm() {
         const firstname = getCookie('firstname');
         const welcomeMessage = document.getElementById("welcomeMessage");
-        if (firstname && !welcomeMessage) {
-          const welcomemsg = document.createElement("div");
-          welcomemsg.id = 'welcomeMessage';
-          welcomemsg.innerHTML = `<h1>Welcome: ${firstname} <a class="logout-link" onclick="deleteCookiesAndShowForm()"> (logout)</a></h1>`;
-          document.welcomeMessage.appendChild(welcomemsg);
+        if (firstname) {
+          const welcomeDiv = document.createElement("div");
+          welcomeDiv.innerHTML = `<h1>Welcome: ${firstname}</h1>`;
+
+          const logoutlink = document.createElement("a");
+          logoutlink.href = "#";
+          logoutlink.className = "logout-link";
+          logoutlink.textContent = " (logout)";
+          logoutlink.onclick = function() {
+            deleteCookiesAndShowForm();
+            return false;
+          };
+          welcomeDiv.appendChild(logoutlink);
+
+          welcomeMessage.innerHTML = '';
+          welcomeMessage.appendChild(welcomeDiv);
         } else {
           showForm();
         }
