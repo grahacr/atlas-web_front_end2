@@ -7,7 +7,7 @@
   <script src="./src/index.js"></script>
 </head>
 <body>
-
+<!--login and show cookies section-->
   <div class="cookies-section" id="cookies-section">
     <h2>Login to the website</h2>
     <input type="text" id="firstname" placeholder="Firstname">
@@ -18,12 +18,15 @@
     <button onclick="showCookies()">Show the cookies</button>
   </div>
 
-  <div class="welomeMessage">
+  <div id="welcomeMessage"></div>
+
+<!--  <div class="welomeMessage">
     <h2>Welcome:</h2>
     <input type="text" id="" placeholder="">
     <input type="text" id='' placeholder="">
     <button onclick="()"></button>
-  </div>
+  </div>-->
+
 
   <script>
     function setCookies() {
@@ -33,8 +36,8 @@
       expiryDate.setDate(expiryDate.getDate() + 10);
       const expires = expiryDate.toUTCString();
 
-      document.cookie += `firstname=${firstname}; expires=${expires}; path=/; `;
-      document.cookie += `email=${email}; expires=${expires}; path=/; `;
+      document.cookie = `firstname=${firstname}; expires=${expires}; path=/; `;
+      document.cookie = `email=${email}; expires=${expires}; path=/; `;
     }
     
     function getCookie(name) {
@@ -57,25 +60,21 @@
 
       newP.innerHTML = `Email: ${email} - Firstname: ${firstname}`;
 
-
       cookiesSection.appendChild(newP);
     }
 
     function showForm() {
-      let welcomeRemove = document.getElementById("welcomeMessage");
-      if (welcomeRemove) {
-        welcomeRemove.style.display = 'none';
+      let welcomeMessage = document.getElementById("welcomeMessage");
+      if (welcomeMessage) {
+        welcomeMessage.remove();
       }
-      const form = document.getElementById('form');
-      if (form) {
-        form.style.display = 'block';
+      const form = document.getElementById('cookies-section');
+      form.style.display = 'block';
       }
-    }
+
     function hideForm() {
-      const form = document.getElementById('form');
-      if (form) {
-        form.style.display = 'none';
-      }
+      const form = document.getElementById('cookies-section');
+      form.style.display = 'none';
     }
 
     function deleteCookiesAndShowForm() {
@@ -85,9 +84,19 @@
     }
 
     function showWelcomeMessageOrForm() {
-      
-    }
+        const firstname = getCookie('firstname');
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        if (firstname && !welcomeMessage) {
+          const welcomemsg = document.createElement("div");
+          welcomemsg.id = 'welcomeMessage';
+          welcomemsg.innerHTML = `<h1>Welcome: ${firstname} <a class="logout-link" onclick="deleteCookiesAndShowForm()"> (logout)</a></h1>`;
+          document.body.appendChild(welcomemsg);
+        } else {
+          showForm();
+        }
+      }
 
+      showWelcomeMessageOrForm();
 
   </script>
   </body>
