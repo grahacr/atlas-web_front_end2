@@ -8,23 +8,18 @@ const availableItems = [
   "Water",
 ]
 
-function isLocalStorageSupported() {
-  try {
-    const testKey = 'test';
-    localStorage.setItem(testKey, testKey);
-    localStorage.removeItem(testKey);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
 
-if (!isLocalStorageSupported()) {
-  alert('Sorry, your browser does not support Web storage. Try again with a better one');
-} else {
-  createStore();
-  displayCart();
-}
+  function createStore() {
+    let shopList = document.createElement("ul");
+    let cart = document.getElementById("cart");
+    cart.appendChild(shopList);
+    availableItems.forEach(item => {
+      let listitem = document.createElement("li");
+      listitem.textContent = item;
+      listitem.addEventListener("click", addItemToCart);
+      shopList.appendChild(listitem);
+    });
+  }
 
 function getCartFromStorage() {
   const cartitem = sessionStorage.getItem('cart');
@@ -35,6 +30,7 @@ function getCartFromStorage() {
   }
 }
 
+// for task 7.   <script src="app.js"></script> //
 function addItemToCart(item) {
   const cart = getCartFromStorage();
   if (cart) {
@@ -64,8 +60,4 @@ function removeItemfromCart(item) {
     const cart = {};
     sessionStorage.setItem('cart', JSON.stringify(cart));
     displayCart();
-  }
-
-  function createStore() {
-
   }

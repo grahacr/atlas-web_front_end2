@@ -4,11 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shopping Cart</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Optional: Stylesheet for styling -->
+
 </head>
 <body>
   <div id="cart"></div>
 
-  <script src="app.js"></script>
+  <script>
+    const availableItems = [
+  "Shampoo",
+  "Soap",
+  "Sponge",
+  "Water",
+]
+
+function isLocalStorageSupported() {
+  try {
+    const testKey = 'test';
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+if (!isLocalStorageSupported()) {
+  alert('Sorry, your browser does not support Web storage. Try again with a better one');
+} else {
+  createStore();
+  displayCart();
+}
+
+function addItemToCart(item) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || {};
+  cart[item] = true;
+  localStorage.setItem('cart', JSON.stringify(cart));
+  }
+  
+function createStore() {
+  let shopList = document.createElement("ul");
+  let cart = document.getElementById("cart");
+  cart.appendChild(shopList);
+  availableItems.forEach(item => {
+    let listitem = document.createElement("li");
+    listitem.textContent = item;
+    listitem.addEventListener("click", addItemToCart);
+    shopList.appendChild(listitem);
+  });
+}
+
+function displayCart() {
+  let cart = JSON.parse(localStorage.getItem('cart'));
+
+  if (!cart || Object.keys(cart).length === 0) {
+    return;
+  }
+  let itemcount = Object.keys(cart).length;
+  let message = `You previously had ${itemcount} in your cart`;
+
+  let messageDisplay = document.createElement('p');
+  messageDisplay.textContent = message;
+  document.body.appendChild(messageDisplay);
+}
+
+
+  </script>
+
 </body>
 </html>
