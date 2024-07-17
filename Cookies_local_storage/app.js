@@ -1,6 +1,5 @@
 //started making task 7 accidentally before 5. go back to task 5 to create first functions like displaycart //
 
-
 const availableItems = [
   "Shampoo",
   "Soap",
@@ -8,6 +7,23 @@ const availableItems = [
   "Water",
 ]
 
+function isSession() {
+  try {
+    const testKey = 'test';
+    sessionStorage.setItem(testKey, testKey);
+    sessionStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+if (!isSession()) {
+  alert('Sorry, your browser does not support Web storage. Try again with a better one');
+} else {
+  createStore();
+  displayCart();
+}
 
   function createStore() {
     let shopList = document.createElement("ul");
@@ -30,7 +46,7 @@ function getCartFromStorage() {
   }
 }
 
-// for task 7.   <script src="app.js"></script> //
+// for task 7.   
 function addItemToCart(item) {
   const cart = getCartFromStorage();
   if (cart) {
@@ -61,3 +77,17 @@ function removeItemfromCart(item) {
     sessionStorage.setItem('cart', JSON.stringify(cart));
     displayCart();
   }
+  
+  function createStore() {
+    let available = document.createElement("h2");
+    let shopList = document.createElement("ul");
+    available.appendChild(shopList);
+    let cart = document.getElementById("cart");
+    cart.appendChild(shopList);
+    availableItems.forEach(item => {
+      let listitem = document.createElement("li");
+      listitem.textContent = item;
+      listitem.addEventListener("click", () => addItemToCart(item));
+      shopList.appendChild(listitem);
+  });
+}
