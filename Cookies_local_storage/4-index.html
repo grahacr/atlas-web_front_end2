@@ -6,7 +6,7 @@
   <title>Welcome</title>  
 
   <!-- js-cookie CDN -->
-   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/src/js.cookie.min.js"></script>
+   <script src=" https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js "></script>
    <!--src js-->
    <script src="./src/index.js"></script>
 </head>
@@ -26,25 +26,19 @@
 
   </div>
 
-<!--  <div class="welomeMessage">
-    <h2>Welcome:</h2>
-    <input type="text" id="" placeholder="">
-    <input type="text" id='' placeholder="">
-    <button onclick="()"></button>
-  </div>-->
-
 
   <script>
     function setCookiesAndShowWelcomeMessage() {
-      const firstname = Cookies.get('firstname');
-      const email = Cookies.get('email');
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 10);
-      const expires = expiryDate.toUTCString();
+      const firstname = document.getElementById('firstname').value;
+      const email = document.getElementById('email').value;
 
-      Cookies.set('firstname', `${firstname}`, { expires: `${expires}`, path: '/' });
-      Cookies.set('email', `${email}`, { expires: `${expires}`, path: '/' });
+      console.log('Firstname:', firstname);
+      console.log('Email', email);
 
+      Cookies.set('firstname', firstname, { expires: 10});
+      Cookies.set('email', email, { expires: 10});
+
+      console.log('Cookies set:', Cookies.get('firstname'), Cookies.get('email'));
       showWelcomeMessageOrForm();
     }
     
