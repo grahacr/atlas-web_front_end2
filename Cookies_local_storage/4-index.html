@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Welcome</title>  
+
+  <!-- js-cookie CDN -->
+   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/src/js.cookie.min.js"></script>
+   <!--src js-->
+   <script src="./src/index.js"></script>
+</head>
+<body>
+<!--login and show cookies section-->
+  <div class="cookies-section" id="cookies-section">
+    <h2>Login to the website</h2>
+    <input type="text" id="firstname" placeholder="Firstname">
+    <input type="text" id='email' placeholder="Email">
+    <button onclick="setCookiesAndShowWelcomeMessage()">Log me in</button>
+    
+    <h2>Cookies</h2>
+    <button onclick="showCookies()">Show the cookies</button>
+  </div>
+
+  <div id="welcomeMessage">
+
+  </div>
+
+<!--  <div class="welomeMessage">
+    <h2>Welcome:</h2>
+    <input type="text" id="" placeholder="">
+    <input type="text" id='' placeholder="">
+    <button onclick="()"></button>
+  </div>-->
+
+
+  <script>
+    function setCookiesAndShowWelcomeMessage() {
+      const firstname = Cookies.get('firstname');
+      const email = Cookies.get('email');
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 10);
+      const expires = expiryDate.toUTCString();
+
+      Cookies.set('firstname', `${firstname}`, { expires: `${expires}`, path: '/' });
+      Cookies.set('email', `${email}`, { expires: `${expires}`, path: '/' });
+
+      showWelcomeMessageOrForm();
+    }
+    
+    function showCookies() {
+      const cookiesSection = document.getElementById('cookies-section');
+      const newP = document.createElement("p");
+      const firstname = Cookies.get('firstname');
+      const email = Cookies.get('email');
+
+      newP.textContent = `Email: ${email} - Firstname: ${firstname}`;
+
+      cookiesSection.appendChild(newP);
+    }
+
+    function showForm() {
+      const welcomeMessage = document.getElementById("welcomeMessage");
+      if (welcomeMessage) {
+        welcomeMessage.innerHTML = '';
+      }
+      const form = document.getElementById('cookies-section');
+      form.style.display = 'block';
+      }
+
+    function hideForm() {
+      const form = document.getElementById('cookies-section');
+      form.style.display = 'none';
+    }
+
+    function deleteCookiesAndShowForm() {
+      Cookies.remove('firstname');
+      Cookies.remove('email');
+      showForm();
+    }
+
+    function showWelcomeMessageOrForm() {
+        const firstname = Cookies.get('firstname');
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        if (firstname) {
+          const welcomeDiv = document.createElement("div");
+          welcomeDiv.innerHTML = `<h1>Welcome: ${firstname}</h1>`;
+
+          const logoutlink = document.createElement("a");
+          logoutlink.href = "#";
+          logoutlink.className = "logout-link";
+          logoutlink.textContent = " (logout)";
+          logoutlink.onclick = function() {
+            deleteCookiesAndShowForm();
+            return false;
+          };
+          welcomeDiv.appendChild(logoutlink);
+
+          welcomeMessage.innerHTML = '';
+          welcomeMessage.appendChild(welcomeDiv);
+        } else {
+          showForm();
+        }
+      }
+
+      showWelcomeMessageOrForm();
+
+  </script>
+  </body>
+</html>
