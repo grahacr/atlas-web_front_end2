@@ -40,7 +40,7 @@ if (!isSession()) {
     const shopList = document.createElement("ul");
     available.appendChild(shopList);
     let cart = document.getElementById("cart");
-    cart.appendChild(available);
+    cart.insertBefore(available, cart.firstChild);
     availableItems.forEach(item => {
       let listitem = document.createElement("li");
       listitem.textContent = item;
@@ -87,8 +87,6 @@ function removeItemfromCart(item) {
     sessionStorage.setItem('cart', JSON.stringify(cart));
     displayCart();
   }
-  
-
 
 function displayCart() {
   const cartElement = document.getElementById('cart');
@@ -100,10 +98,11 @@ function displayCart() {
     cartElement.appendChild(productsHeading);
   }
 
-  let cartDiv = productsHeading.querySelector('div');
+  let cartDiv = cartElement.querySelector('#cartDiv');
   if (!cartDiv) {
     cartDiv = document.createElement('div');
-    productsHeading.appendChild(cartDiv);
+    cartDiv.id = 'cartDiv';
+    cartElement.appendChild(cartDiv);
   } else {
     cartDiv.innerHTML = '';
   }
@@ -115,8 +114,6 @@ function updateCart() {
   const cart = getCartFromStorage();
   const cartDiv = document.getElementById('cartDiv');
   const cartSize = Object.keys(cart).length;
-
-  cartDiv.innerHTML = '';
 
   if (cartSize !== 0) {
     const cartList = document.createElement('ul');
@@ -138,6 +135,10 @@ function updateCart() {
     emptyCart.innerText = 'Your cart is empty'
     cartDiv.appendChild(emptyCart);
   }
+
+  const clearCart = document.createElement('p');
+  clearCart.innerHTML = '<a href="#" onclick="clearCart()">Clear my cart</a>';
+  cartDiv.insertBefore(clearCart, cartDiv.firstChild);
 }
 
 isSession();
