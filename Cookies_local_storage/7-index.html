@@ -7,9 +7,7 @@
 
 </head>
 <body>
-  <div id="cart">
-    <div id="cartDiv"></div>
-  </div>
+  <div id="cart"></div>
 <script>
 
 const availableItems = [
@@ -37,11 +35,12 @@ if (!isSession()) {
   displayCart();
 }
   function createStore() {
-    let available = document.createElement("h2");
-    let shopList = document.createElement("ul");
+    const available = document.createElement("h2");
+    available.textContent = 'Available products:';
+    const shopList = document.createElement("ul");
     available.appendChild(shopList);
     let cart = document.getElementById("cart");
-    cart.appendChild(shopList);
+    cart.appendChild(available);
     availableItems.forEach(item => {
       let listitem = document.createElement("li");
       listitem.textContent = item;
@@ -62,25 +61,23 @@ function getCartFromStorage() {
 // for task 7.   
 function addItemToCart(item) {
   const cart = getCartFromStorage();
-  if (cart) {
-    if (cart[item]) {
+  if (cart[item]) {
       cart[item].quantity += 1;
     } else {
       cart[item] = { quantity: 1 };
     }
     sessionStorage.setItem('cart', JSON.stringify(cart));
+    displayCart();
   }
-  displayCart();
-}
 
 function removeItemfromCart(item) {
   const cart = getCartFromStorage();
-    if (cart && cart[item]) {
-      if (cart[item].quantity > 1) {
-        cart[item].quantity -= 1;
-      } else {
+    if (cart[item] && cart[item].quantity > 0) {
+      cart[item].quantity -= 1;
+      if (cart[item].quantity === 0) {
         delete cart[item];
       }
+      sessionStorage.setItem('cart', JSON.stringify(cart));
     }
     displayCart();
   }
@@ -118,27 +115,28 @@ function updateCart() {
   const cart = getCartFromStorage();
   const cartDiv = document.getElementById('cartDiv');
   const cartSize = Object.keys(cart).length;
-  const cartList = document.createElement('ul');
 
+  cartDiv.innerHTML = '';
 
   if (cartSize !== 0) {
+    const cartList = document.createElement('ul');
+
     Object.keys(cart).forEach(item => {
       const listitem = document.createElement('li');
-      const itemVal = cart[item];
+      listitem.textContent = `${item} x ${cart[item].quantity}`;
 
-      listitem.textContent = `${item} x ${itemVal.quantity}`;
-      const removeText = document.createElement('p');
-      removeText.textContent = '(remove)';
+      const removeText = document.createElement('span');
+      removeText.textContent = ' (remove)';
       removeText.addEventListener('click', () => removeItemfromCart(item));
       listitem.appendChild(removeText);
-      cartDiv.appendChild(listitem);
+      cartList.appendChild(listitem);
     });
     
     cartDiv.appendChild(cartList);
   } else {
     const emptyCart = document.createElement('p');
     emptyCart.innerText = 'Your cart is empty'
-    cartList.append(emptyCart);
+    cartDiv.appendChild(emptyCart);
   }
 }
 
