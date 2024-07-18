@@ -91,3 +91,41 @@ function removeItemfromCart(item) {
       shopList.appendChild(listitem);
   });
 }
+
+function displayCart() {
+  const cartElement = document.getElementById('cart');
+
+  let productsHeading = cartElement.querySelector('h2');
+  if (!productsHeading) {
+    productsHeading = document.createElement('h2');
+    productsHeading.innerText = 'Your cart:';
+    cartElement.appendChild(productsHeading);
+  }
+
+  let cartDiv = productsHeading.querySelector('div');
+  if (!cartDiv) {
+    cartDiv = document.createElement('div');
+    productsHeading.appendChild(cartDiv);
+  } else {
+    cartDiv.innerHTML = '';
+  }
+
+  updateCart();
+}
+
+function updateCart() {
+  const cart = getCartFromStorage();
+  const cartDiv = document.getElementById('cartDiv');
+  const cartSize = Object.keys(cart).length;
+  const cartList = document.createElement('ul');
+  cartDiv.appendChild(cartList);
+
+  if (cartSize !== 0) {
+    
+
+  } else {
+    const emptyCart = document.createElement('p');
+    emptyCart.innerText = 'Your cart is empty'
+    cartList.append(emptyCart);
+  }
+}
